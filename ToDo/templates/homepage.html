@@ -1,14 +1,36 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Welcome to your page</title>
-    </head>
-    <body>
-        <h1>ToDo Application</h1>
-        <div id="tasks">
-            <h3>Task Title</h3></br>
-            <h4>Task: IS IMPORTANT</h4>
-            <p>Task description</p>
-        </div>
-    </body>
-</html>
+{% extends "base.html" %}
+        {% block content %}
+            <h1>Welcome {{ user.username }} ToDo Application</h1>
+            <table>
+                <tr>
+                    <td>Task Title</td>
+                    <td>Task Description</td>
+                    <td>Favourite/Not</td>
+                    <td>Update task</td>
+                </tr>
+                {% for task in todo_list %}
+                    <tr>
+                        <td>{{task.task_title}}</td>
+                        <td>{{task.task_description}}</td>
+                        <td>{{task.is_important_task}}</td>
+                        <td>
+                            <form action="{% url 'updatetask' user.id task.id%}" method="get">
+                                {% csrf_token %}
+                                <input type="submit" value="Update task">
+                            </form> 
+                        </td>
+                        <td>
+                            <form action="{% url 'deletetask' user.id task.id%}" method="POST">
+                                {% csrf_token %}
+                                <input type="submit" value="Delete task">
+                            </form> 
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <form action="{% url 'newtask' user.id%}" method="get">
+                {% csrf_token %}
+                <input type="submit" value="Add task">
+            </form>
+            <a href="{% url 'logout' %}">Logout</a>
+{% endblock content %}

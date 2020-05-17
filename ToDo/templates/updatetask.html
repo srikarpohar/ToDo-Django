@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+        {% block content %}
+        {% if user.is_authenticated %}
+            <h1>ToDo Application</h1>
+        
+            <div id="updatetask">
+                
+                <form action="{% url 'updatetask' user.id task_id %}" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Submit Task">
+                </form>
+            </div>
+        {% else %}
+            <p>Your are not logged in. Login by <span><a href="login.html">clicking here.</a></span></p>
+        {% endif %}
+        {% endblock content %}
+   
